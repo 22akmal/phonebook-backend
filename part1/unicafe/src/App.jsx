@@ -41,17 +41,26 @@ const Statistics = (props) => {
   const averageFeedback = average(props.feedback)
   const positiveFeedbackPct = positvePct(props.feedback)
 
-  return (
-    <div>
-      <h1>statistics</h1>
-      <p>good {props.feedback[0]}</p>
-      <p>neutral {props.feedback[1]}</p>
-      <p>bad {props.feedback[2]}</p>
-      <p>all {sumFeedback}</p>
-      <p>average {averageFeedback}</p>
-      <p>positive {positiveFeedbackPct} %</p>
-    </div>
-  )
+  if (props.feedback[0] === 0 && props.feedback[1] === 0 && props.feedback[2] === 0){
+    return (
+      <div>
+        <h1>statistics</h1>
+        <p>No feedback given</p>
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        <h1>statistics</h1>
+        <p>good {props.feedback[0]}</p>
+        <p>neutral {props.feedback[1]}</p>
+        <p>bad {props.feedback[2]}</p>
+        <p>all {sumFeedback}</p>
+        <p>average {averageFeedback}</p>
+        <p>positive {positiveFeedbackPct} %</p>
+      </div>
+    )
+  }
 }
 
 const App = () => {
