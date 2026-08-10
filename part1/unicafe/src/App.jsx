@@ -6,51 +6,52 @@ const Button = (props) => {
   )
 }
 
-const Paragraph = (props) => {
-  return (
-    <p>{props.text} {props.number}</p>
-  )
+function sum (data) {
+  const sum = data[0] + data[1] + data[2]
+  return sum
 }
 
-const Sum = (props) => {
-  const sum = props.feedback[0] + props.feedback[1] + props.feedback[2]
-
-  return (
-    <p>all {sum}</p>
-  )
-}
-
-const Average = (props) => {
-  const sum = props.feedback[0] + props.feedback[1] + props.feedback[2]
-  const goodFeedback = props.feedback[0]
-  const neutralFeedback = props.feedback[1] * 0
-  const badFeedback = props.feedback[2] * -1
+function average(data) {
+  const sum = data[0] + data[1] + data[2]
+  const goodFeedback = data[0]
+  const neutralFeedback = data[1] * 0
+  const badFeedback = data[2] * -1
   const average = (goodFeedback + neutralFeedback + badFeedback)/sum
 
   if (!Number(average)){
-    return (
-      <p>average 0</p>
-    )
+    return 0
   } else {
-    return (
-      <p>average {average}</p>
-    )
+    return average
   }
 }
 
-const PositvePct = (props) => {
-  const sum = props.feedback[0] + props.feedback[1] + props.feedback[2]
-  const percentage = (props.feedback[0] / sum) * 100
+function positvePct(data) {
+  const sum = data[0] + data[1] + data[2]
+  const percentage = (data[0] / sum) * 100
 
   if (!Number(percentage)){
-    return (
-      <p>positive 0</p>
-    )
+    return 0
   } else {
-    return (
-      <p>positive {percentage} %</p>
-    )
+    return percentage
   }
+}
+
+const Statistics = (props) => {
+  const sumFeedback = sum(props.feedback)
+  const averageFeedback = average(props.feedback)
+  const positiveFeedbackPct = positvePct(props.feedback)
+
+  return (
+    <div>
+      <h1>statistics</h1>
+      <p>good {props.feedback[0]}</p>
+      <p>neutral {props.feedback[1]}</p>
+      <p>bad {props.feedback[2]}</p>
+      <p>all {sumFeedback}</p>
+      <p>average {averageFeedback}</p>
+      <p>positive {positiveFeedbackPct} %</p>
+    </div>
+  )
 }
 
 const App = () => {
@@ -64,13 +65,7 @@ const App = () => {
       <Button onClick={() => setGood(good + 1)} text={"good"}/>
       <Button onClick={() => setNeutral(neutral + 1)} text={"neutral"}/>
       <Button onClick={() => setBad(bad + 1)} text={"bad"}/>
-      <h1>statistics</h1>
-      <Paragraph text={"good"} number={good}/>
-      <Paragraph text={"neutral"} number={neutral}/>
-      <Paragraph text={"bad"} number={bad}/>
-      <Sum feedback={[good, neutral, bad]}/>
-      <Average feedback={[good, neutral, bad]}/>
-      <PositvePct feedback={[good, neutral, bad]}/>
+      <Statistics feedback={[good, neutral, bad]}/>
     </div>
   )
 }
