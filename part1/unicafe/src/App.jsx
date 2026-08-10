@@ -18,46 +18,46 @@ function average(data) {
   const badFeedback = data[2] * -1
   const average = (goodFeedback + neutralFeedback + badFeedback)/sum
 
-  if (!Number(average)){
+  if (isNaN(average)){
     return 0
   } else {
     return average
   }
 }
 
-function positvePct(data) {
+function positivePct(data) {
   const sum = data[0] + data[1] + data[2]
   const percentage = (data[0] / sum) * 100
 
-  if (!Number(percentage)){
-    return 0
+  if (isNaN(percentage)){
+    return "0 %"
   } else {
-    return percentage
+    return `${percentage} %`
   }
 }
 
-const Statistics = (props) => {
-  const sumFeedback = sum(props.feedback)
-  const averageFeedback = average(props.feedback)
-  const positiveFeedbackPct = positvePct(props.feedback)
+const StatisticLine = (props) => {
+  return (
+    <p>{props.text} {props.value}</p>
+  )
+}
 
+const Statistics = (props) => {
   if (props.feedback[0] === 0 && props.feedback[1] === 0 && props.feedback[2] === 0){
     return (
       <div>
-        <h1>statistics</h1>
         <p>No feedback given</p>
       </div>
     )
   } else {
     return (
       <div>
-        <h1>statistics</h1>
-        <p>good {props.feedback[0]}</p>
-        <p>neutral {props.feedback[1]}</p>
-        <p>bad {props.feedback[2]}</p>
-        <p>all {sumFeedback}</p>
-        <p>average {averageFeedback}</p>
-        <p>positive {positiveFeedbackPct} %</p>
+        <StatisticLine text="good" value={props.feedback[0]}/>
+        <StatisticLine text="neutral" value={props.feedback[1]}/>
+        <StatisticLine text="bad" value={props.feedback[2]}/>
+        <StatisticLine text="all" value={sum(props.feedback)}/>
+        <StatisticLine text="average" value={average(props.feedback)}/>
+        <StatisticLine text="positive" value={positivePct(props.feedback)}/>
       </div>
     )
   }
@@ -74,6 +74,7 @@ const App = () => {
       <Button onClick={() => setGood(good + 1)} text={"good"}/>
       <Button onClick={() => setNeutral(neutral + 1)} text={"neutral"}/>
       <Button onClick={() => setBad(bad + 1)} text={"bad"}/>
+      <h1>statistics</h1>
       <Statistics feedback={[good, neutral, bad]}/>
     </div>
   )
