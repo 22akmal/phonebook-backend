@@ -21,7 +21,7 @@ function average(data) {
   if (isNaN(average)){
     return 0
   } else {
-    return average
+    return average.toFixed(1)
   }
 }
 
@@ -32,13 +32,16 @@ function positivePct(data) {
   if (isNaN(percentage)){
     return "0 %"
   } else {
-    return `${percentage} %`
+    return `${percentage.toFixed(1)} %`
   }
 }
 
 const StatisticLine = (props) => {
   return (
-    <p>{props.text} {props.value}</p>
+    <tr>
+      <td>{props.text}</td>
+      <td>{props.value}</td>
+    </tr>
   )
 }
 
@@ -51,14 +54,16 @@ const Statistics = (props) => {
     )
   } else {
     return (
-      <div>
-        <StatisticLine text="good" value={props.feedback[0]}/>
-        <StatisticLine text="neutral" value={props.feedback[1]}/>
-        <StatisticLine text="bad" value={props.feedback[2]}/>
-        <StatisticLine text="all" value={sum(props.feedback)}/>
-        <StatisticLine text="average" value={average(props.feedback)}/>
-        <StatisticLine text="positive" value={positivePct(props.feedback)}/>
-      </div>
+      <table>
+        <tbody>
+          <StatisticLine text="good" value={props.feedback[0]}/>
+          <StatisticLine text="neutral" value={props.feedback[1]}/>
+          <StatisticLine text="bad" value={props.feedback[2]}/>
+          <StatisticLine text="all" value={sum(props.feedback)}/>
+          <StatisticLine text="average" value={average(props.feedback)}/>
+          <StatisticLine text="positive" value={positivePct(props.feedback)}/>
+        </tbody>
+      </table>
     )
   }
 }
