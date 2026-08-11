@@ -14,17 +14,19 @@ const Part = (props) => (
   </p>
 )
 
-const Total = (props) => <p><strong>Number of exercises {props.total}</strong></p>
+const Total = (props) => {
+  return (<p>
+    <strong>Total of {props.total.reduce((s, p) => s + p.exercises, 0)} exercises</strong>
+  </p>
+  )
+}
 
 const Course = (props) => {
   return (
     <div>
       <Header course={props.course.name}/>
       <Content parts={props.course.parts}/>
-      <Total total={props.course.parts[0].exercises + 
-        props.course.parts[1].exercises + 
-        props.course.parts[2].exercises + 
-        props.course.parts[3].exercises}/>
+      <Total total={props.course.parts}/>
     </div>
   )
 }
