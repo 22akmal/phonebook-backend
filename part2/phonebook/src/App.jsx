@@ -20,6 +20,17 @@ function App() {
       .then(newData => setPersons(persons.concat(newData)))
   }
 
+  const handleDelete = (person) => {
+    if(window.confirm(`Delete ${person.name}`)){
+      personService
+        .remove(person.id)
+        .then(personRemoved => {
+          console.log("delete: ", personRemoved)
+          setPersons(persons.filter((person) => person.id !== personRemoved.id))
+        })
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -27,7 +38,7 @@ function App() {
       <h1>add a new</h1>
       <PersonForm persons={persons} onAddPerson={addPerson}/>
       <h2>Numbers</h2>
-      <Persons persons={persons}/>
+      <Persons persons={persons} onDeletePerson={handleDelete}/>
     </div>
   )
 }
