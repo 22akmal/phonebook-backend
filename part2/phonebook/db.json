@@ -24,6 +24,16 @@
       "name": "David",
       "number": "12345",
       "id": "H8iJb9H72uE"
+    },
+    {
+      "name": "Adam",
+      "number": "98765",
+      "id": "CqZbbVNgAPI"
+    },
+    {
+      "name": "wadaw",
+      "number": "13235",
+      "id": "oBzkAshZNZM"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
