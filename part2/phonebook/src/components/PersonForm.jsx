@@ -1,4 +1,5 @@
 import { useState } from "react";
+import personService from '../services/phonebook'
 
 const PersonForm = (props) => {
   const [newName, setNewName] = useState('')
@@ -8,7 +9,12 @@ const PersonForm = (props) => {
     event.preventDefault()
     const personNameList = props.persons.map((person) => person.name)
     if (personNameList.includes(newName)){
-      alert(`${newName} is already added to phonebook`)
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
+        const updatePerson = props.persons.find((person) => 
+          person.name === newName
+        )
+        props.onUpdatePerson(updatePerson, newNumber)
+      }
       setNewName('')
       setNewNumber('')
       return

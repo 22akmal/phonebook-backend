@@ -14,14 +14,23 @@ function App() {
       .then(dataInitial => setPersons(dataInitial))
   }, [])
 
-  const addPerson = (newPerson) => {
+  const addPerson = (newData) => {
     personService
-      .create(newPerson)
-      .then(newData => setPersons(persons.concat(newData)))
+      .create(newData)
+      .then(newPerson => setPersons(persons.concat(newPerson)))
+  }
+
+  const updatePerson = (person, newNumber) => {
+    const changedNumber = {...person, number: newNumber}
+    personService
+      .update(person.id, changedNumber)
+      .then(updatedNumber => {
+        setPersons(persons.map(p => p.id === updatedNumber.id ? updatedNumber : p))
+      })
   }
 
   const handleDelete = (person) => {
-    if(window.confirm(`Delete ${person.name}`)){
+    if (window.confirm(`Delete ${person.name}`)) {
       personService
         .remove(person.id)
         .then(personRemoved => {
@@ -34,11 +43,11 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter persons={persons}/>
+      <Filter persons={persons} />
       <h1>add a new</h1>
-      <PersonForm persons={persons} onAddPerson={addPerson}/>
+      <PersonForm persons={persons} onAddPerson={addPerson} onUpdatePerson={updatePerson}/>
       <h2>Numbers</h2>
-      <Persons persons={persons} onDeletePerson={handleDelete}/>
+      <Persons persons={persons} onDeletePerson={handleDelete} />
     </div>
   )
 }
