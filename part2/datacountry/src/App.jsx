@@ -4,19 +4,28 @@ import Filter from "./components/Filter"
 
 const App = () => {
   const [dataCountry, setDataCountry] = useState([])
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     countryService
       .getAll()
       .then(country => {
-        const listCountry = country.map(item => item.name.common)
-        setDataCountry(listCountry)
+        setDataCountry(country)
       })
   }, [])
 
+  const matchedCountry = dataCountry.filter((item) =>
+    item.name.common.toLowerCase().includes(search.toLocaleLowerCase()))
+
   return (
     <div>
-      <Filter data={dataCountry}/>
+      <div>
+        find countries{' '}
+        <input value={search} onChange={(event) => setSearch(event.target.value)} />
+      </div>
+      {search === '' ? null : (
+        <Filter countries={matchedCountry} showCountry={setSearch}/>
+      )}
     </div>
   )
 }

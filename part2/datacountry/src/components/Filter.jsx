@@ -1,88 +1,51 @@
 import { useState, useEffect } from "react"
 import countryService from '../services/countries'
 
-const ButtonDisplay = ({ item, onDisplayCountry }) => {
-  return (
-    <p>
-      {item}
-      <button onClick={() => onDisplayCountry(item)}>Show</button>
-    </p>
-  )
-}
+const Country = ({ country }) => {
+  const languages = Object.values(country.languages)
 
-const DisplayCountry = ({ displayCountry }) => {
   return (
-    <div>
-      <h1>{displayCountry.name.common}</h1>
-      {displayCountry.capital.map((item, index) =>
-        <p key={index}>{item}</p>)}
-      <p>Area {displayCountry.area}</p>
+    <>
+      <h1>{country.name.common}</h1>
+      <div>Capital {country.capital}</div>
+      <div>Area {country.area}</div>
+
       <h2>Languages</h2>
+
       <ul>
-        {Object.values(displayCountry.languages).map((item, index) =>
-          <li key={index}>{item}</li>)}
+        {languages.map((language) => (
+          <li key={language}>{language}</li>
+        ))}
       </ul>
-      <img src={displayCountry.flags.png} alt={displayCountry.flags.alt} />
-    </div>
+
+      <img
+        src={country.flags.png}
+        alt={`Flag of ${country.name.common}`}
+        width="200"
+      />
+    </>
   )
 }
 
-const Filtered = ({ country, data }) => {
-  const [displayCountry, setDisplayCountry] = useState(null)
-
-  const temp = data.filter((item) =>
-    item.toLowerCase().includes(country.toLocaleLowerCase()))
-
-  useEffect(() => {
-    setDisplayCountry(null)
-    if (temp.length === 1) {
-      countryService
-        .getCountry(temp[0])
-        .then((response) => setDisplayCountry(response))
-    }
-  }, [country])
-
-  const handleClickDisplay = (countryName) => {
-    countryService
-      .getCountry(countryName)
-      .then(response => {
-        setDisplayCountry(response)
-      })
+const Filter = ({ countries, showCountry }) => {
+  if (countries.length > 10) {
+    return 'Too many countries'
   }
 
-  if (!country) {
-    return null
+  if (countries.length > 1) {
+    return countries.map((c) => (
+      <div key={c.cca3}>
+        {c.name.common}{' '}
+        <button onClick={() => showCountry(c.name.common)}>Show</button>
+      </div>
+    ))
   }
 
-  if (displayCountry) {
-    return <DisplayCountry displayCountry={displayCountry} />
+  if (countries.length === 1){
+    return <Country country={countries[0]}/>
   }
 
-  if (temp.length > 10) {
-    return 'Too many matches, specify another filter'
-  }
-
-  if (temp.length > 1) {
-    return temp.map((item, index) =>
-      <ButtonDisplay item={item} key={index} onDisplayCountry={handleClickDisplay} />)
-  }
-
-  return null
-}
-
-const Filter = ({ data }) => {
-  const [country, setCountry] = useState('')
-
-  const handleInputChange = (event) => {
-    setCountry(event.target.value)
-  }
-
-  return (
-    <div>
-      <p>find country <input value={country} onChange={handleInputChange} /></p>
-      <Filtered country={country} data={data} />
-    </div>
-  )
+  return <div>No matches, please try another search</div>
 }
 
 export default Filter
