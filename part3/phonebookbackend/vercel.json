@@ -4,12 +4,32 @@
     {
       "src": "index.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "dist/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/assets/(.*)",
+      "dest": "/dist/assets/$1"
+    },
+    {
+      "src": "/favicon.svg",
+      "dest": "/dist/favicon.svg"
+    },
+    {
+      "src": "/icons.svg",
+      "dest": "/dist/icons.svg"
+    },
+    {
+      "src": "/api/(.*)",
       "dest": "index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/dist/index.html"
     }
   ]
 }
