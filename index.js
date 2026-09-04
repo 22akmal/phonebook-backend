@@ -5,7 +5,7 @@ const Person = require('./models/person')
 const app = express()
 
 app.use(express.json())
-app.use(express.static('dist'))
+app.use(express.static(path.join(__dirname, 'dist')))
 
 morgan.token('body', (request, response) =>
   JSON.stringify(request.body)
